@@ -1,0 +1,40 @@
+<form layout-gt-sm="column" layout-padding name="signupForm">
+  <md-content class="autoScroll">
+
+    <md-input-container class="md-block">
+      <label localize>Email address</label>
+      <input type="email" required name="email" ng-model="vm.user.email">
+      <div ng-messages="signupForm.email.$error">
+        <div ng-message="required"><span localize>This is required.</span></div>
+        <div ng-message="email"><span localize>Make sure your email address is valid.</span></div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label localize>Password</label>
+      <input ng-model="vm.user.password" required name="password" type="password">
+      <div ng-messages="signupForm.password.$error">
+        <div ng-message="required"><span localize>This is required.</span></div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label localize>Name</label>
+      <input type="text" required name="name" ng-model="vm.user.name">
+      <div ng-messages="signupForm.name.$error">
+        <div ng-message="required"><span localize>This is required.</span></div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label localize>Bankaccount number</label>
+      <input type="text" required name="bankAccount" ng-model="vm.user.bankAccount">
+      <div ng-messages="signupForm.bankAccount.$error" md-auto-hide="false">
+        <div ng-message="required"><span localize>We only show this to your group members.</span></div>
+      </div>
+    </md-input-container>
+
+    <div layout="column">
+      <md-button type="submit" class="md-primary md-raised" ng-click="vm.signup()"><span localize>Sign up</span></md-button>
+      <md-button ui-sref="public.login"><span localize>I already have an account</span></md-button>
+    </div>
+
+  </md-content>
+</form>

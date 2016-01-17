@@ -1,0 +1,23 @@
+<md-dialog aria-label="Invite someone"  ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-icon class="material-icons" ng-click="vm.cancel()">close</md-icon>
+        <span flex></span>
+        <md-button class="md-accent" ng-click="vm.invite()">
+          <span localize>Add</span>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <md-content class="md-padding autocomplete" layout="column">
+        <form name="inviteForm">
+          <md-input-container class="md-block">
+            <label localize>Email address</label>
+            <input type="email" name="description" ng-model="vm.email" autofocus>
+          </md-input-container>
+        </form>
+      </md-content>
+    </md-dialog-content>
+  </form>
+</md-dialog>
