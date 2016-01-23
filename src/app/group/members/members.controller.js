@@ -17,7 +17,6 @@
         controller: InviteMemberController,
         controllerAs: 'vm',
         templateUrl: 'app/group/members/inviteMember.html',
-        targetEvent: $event,
         clickOutsideToClose: true
       })
       .then(function(member) {

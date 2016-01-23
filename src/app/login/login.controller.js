@@ -6,15 +6,15 @@
     .controller('LoginController', LoginController);
 
   /** @ngInject */
-  function LoginController(authorization, authentication) {
+  function LoginController($stateParams, authentication) {
     var vm = this;
 
-    vm.user = {email: '', password: ''}
+    vm.user = {email: $stateParams.email, password: ''}
 
     vm.login = function () {
       authentication.requestToken(vm.user.email, vm.user.password);
     };
 
-    authentication.processSavedCredentials();
+    authentication.processSavedCredentials(function () {});
   }
 })();

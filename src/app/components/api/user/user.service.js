@@ -55,13 +55,36 @@
      * @name delete
      * @desc Asks the server to delete the current user
      */
-    service.delete = function () {
+    service.delete = function (callback) {
       $http.delete(api.private + '/users/' + service.me().email)
       .success(function () {
         authentication.logout();
       })
-      .error(function () {
-        throw new Error('Can\'t delete account!')
+      .error(function (err) {
+        callback(err);
+      });
+    };
+
+    service.forgotPassword = function (id, callback) {
+      $http.put(api.public + '/users/' + id + '/password')
+      .success(function () {
+        callback();
+      })
+      .error(function (err) {
+        throw new Error(err);
+      });
+    };
+
+    service.setNewPassword = function (id, password, token, callback) {
+      $http.post(api.public + '/users/' + id + '/password',{
+        token: token,
+        password: password
+      })
+      .success(function (data) {
+        callback();
+      })
+      .error(function (err) {
+        throw new Error(err);
       });
     };
 

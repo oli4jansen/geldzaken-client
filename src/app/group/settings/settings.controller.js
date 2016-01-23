@@ -37,7 +37,6 @@
         );
 
         $state.go('private.main');
-        $state.reload();
       }, function (res) {
         $mdDialog.show(
           $mdDialog.alert()

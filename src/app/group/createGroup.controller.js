@@ -9,12 +9,12 @@
   function CreateGroupController($state, groupService) {
     var vm = this;
 
-    vm.group = {}
+    vm.group = {name: ''};
 
     vm.create = function () {
       var group = new groupService.Group({ name: vm.group.name });
-      group.$save(function(group) {
-        $state.go('private.group.members', { id: group.id })
+      group.$save(function(result) {
+        $state.go('private.group.members', { id: result.id })
       });
     };
   }

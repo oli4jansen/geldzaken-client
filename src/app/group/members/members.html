@@ -12,6 +12,9 @@
           <md-menu-item>
             <md-radio-button value="-balance" ng-click="" class="md-primary"><span localize>Balance</span></md-radio-button>
           </md-menu-item>
+          <md-menu-item>
+            <md-radio-button value="-membership.updatedAt" ng-click="" class="md-primary"><span localize>Member since</span></md-radio-button>
+          </md-menu-item>
         </md-radio-group>
       </md-menu-content>
     </md-menu>
@@ -22,14 +25,15 @@
   </div>
 
   <md-list>
-    <md-list-item ng-click="" class="md-2-line" ng-repeat="member in ctrl.group.members | orderBy: ctrl.sorting">
+    <md-list-item ng-click="" class="md-3-line" ng-repeat="member in ctrl.group.members | orderBy: ctrl.sorting">
       <div class="md-list-item-text">
         <div layout="row">
           <h3>{{ member.name }}</h3>
           <span flex></span>
-          <p ng-class="{ 'red': member.balance < 0, 'green': member.balance > 0  }">&euro; {{ member.balance }}</p>
+          <p ng-class="{ 'red': member.balance < 0, 'green': member.balance > 0  }">&euro; {{ member.balance | number: 2}}</p>
         </div>
         <p>{{ member.email }}</p>
+        <p><small><span localize>Member since</span> <span am-time-ago="member.membership.updatedAt"></span></small></p>
       </div>
     </md-list-item>
   </md-list>

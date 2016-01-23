@@ -6,9 +6,7 @@
     .controller('PrivateController', PrivateController);
 
   /** @ngInject */
-  function PrivateController($scope, $state, $rootScope, $mdSidenav, authentication) {
-    var vm = this;
-
+  function PrivateController($scope, $state, $rootScope, $mdSidenav) {
     var closeSideNavOnStateChange = $rootScope.$on('$stateChangeStart', function () {
       $mdSidenav('sidenav').close();
     });

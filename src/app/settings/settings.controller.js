@@ -33,7 +33,9 @@
     };
 
     vm.delete = function () {
-      userService.delete();
+      userService.delete(function (err) {
+        throw new Error(err);
+      });
     }
   }
 })();

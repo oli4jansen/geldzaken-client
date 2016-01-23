@@ -36,7 +36,7 @@
         event.preventDefault();
         // Sla op welke pagina de gebruiker wilde zien
         localStorageService.set('redirectTo', { state: toState.name, params: toParams });
-        $state.go('public.login');
+        $state.go('public.entry');
       }
     };
 

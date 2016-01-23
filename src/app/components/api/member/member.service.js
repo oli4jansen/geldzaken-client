@@ -15,7 +15,7 @@
 
     this.confirm = function (group, callback) {
       $http.put(api.private + '/groups/' + group + '/members')
-      .success(function (data) {
+      .success(function () {
         callback();
       })
       .error(function () {

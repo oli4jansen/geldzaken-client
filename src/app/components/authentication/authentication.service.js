@@ -15,9 +15,12 @@
     var service = this;
 
     // Wordt geroepen bij de first-load om te checken of er al een gebruiker ingelogd is.
-    service.processSavedCredentials = function () {
+    service.processSavedCredentials = function (callback) {
       if (getToken() && getKey()) {
+        callback(true);
         authenticate();
+      } else {
+        callback(false);
       }
     };
 

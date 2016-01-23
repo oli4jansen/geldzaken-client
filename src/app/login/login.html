@@ -3,7 +3,7 @@
 
     <md-input-container class="md-block">
       <label localize>Email address</label>
-      <input required type="email" name="email" ng-model="vm.user.email">
+      <input required type="email" name="email" ng-model="vm.user.email" autofocus>
       <div ng-messages="loginForm.email.$error">
         <div ng-message="required"><span localize>This is required.</span></div>
         <div ng-message="email"><span localize>Make sure your email address is valid.</span></div>
@@ -19,6 +19,7 @@
 
     <div class="bottom-sheet-demo inset" layout="column">
       <md-button type="submit" class="md-primary md-raised" ng-click="vm.login()"><span  localize>Log in</span></md-button>
+      <md-button ui-sref="public.forgotpassword"><span localize>I forgot my password</span></md-button>
       <md-button ui-sref="public.signup"><span localize>I don't have an account</span></md-button>
     </div>
 

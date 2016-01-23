@@ -22,12 +22,12 @@
 
     vm.setCurrentTab($state.current)
 
-    var listener = $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+    vm.listener = $rootScope.$on('$stateChangeSuccess', function(event, toState) {
       vm.setCurrentTab(toState)
     })
 
     $scope.$on('$destroy', function () {
-      listener()
+      vm.listener()
     })
   }
-})()
+})();

@@ -4,7 +4,8 @@
   angular
     .module('geldzakenAngular')
     .controller('PaymentsController', PaymentsController)
-    .controller('CreatePaymentController', CreatePaymentController);
+    .controller('CreatePaymentController', CreatePaymentController)
+    .controller('UpdatePaymentController', UpdatePaymentController);
 
   /** @ngInject */
   function PaymentsController($mdDialog, $mdMedia, $state, $stateParams, paymentService, group, localize) {
@@ -41,17 +42,27 @@
       })
     };
 
-    vm.openPaymentOptions = function (ev) {
-      $mdDialog.show(
-        $mdDialog.confirm()
-          .clickOutsideToClose(true)
-          .title(localize('Delete payment'))
-          .textContent(localize('Are you sure?'))
-          .ariaLabel('Payment Options')
-          .targetEvent(ev)
-          .ok(localize('Delete'))
-          .cancel(localize('Cancel'))
-      );
+    vm.showUpdatePayment = function ($event, payment) {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+      $mdDialog.show({
+        controller: UpdatePaymentController,
+        controllerAs: 'vm',
+        templateUrl: 'app/group/payments/updatePayment.html',
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen,
+        locals: {
+          group: vm.group,
+          payment: payment
+        }
+      })
+      .then(function (data) {
+        paymentService.Payment.update({ group: vm.group.id, id: payment.id }, data, function () {
+          $state.reload();
+        }, function (data) {
+          throw new Error(data);
+        });
+      })
     };
 
     vm.openMenu = function($mdOpenMenu, ev) {
@@ -128,6 +139,68 @@
     };
 
     vm.create = function() {
+      vm.participants.forEach(function (p) {
+        if (p.weight > 0) {
+          vm.payment.participants.push({
+            email: p.email,
+            weight: p.weight
+          });
+        }
+      });
+
+      $mdDialog.hide(vm.payment);
+    };
+  }
+
+  /** @ngInject */
+  function UpdatePaymentController($mdDialog, $timeout, $q, group, payment, userService, lodash) {
+    var vm = this;
+    vm.group = group;
+    vm.payment = {
+      description: payment.description,
+      amount: payment.amount,
+      payedBy: payment.payedBy.email
+    }
+
+    vm.participants = (function () {
+      var participants = lodash.map(group.members, function (p) {
+        var q = lodash.find(payment.participants, function (x) {
+          return x.email == p.email;
+        });
+        return {
+          email: p.email,
+          name: p.name,
+          weight: lodash.get(q, 'paymentParticipation.weight', 0)
+        }
+      });
+      return participants;
+    })();
+
+    vm.increaseAllParticipants = function () {
+      vm.participants.forEach(vm.increaseParticipant);
+    };
+
+    vm.resetAllParticipants = function () {
+      vm.participants.forEach(function (p) {
+        p.weight = 0;
+      });
+    };
+
+    vm.increaseParticipant = function (participant) {
+      participant.weight++;
+    };
+
+    vm.decreaseParticipant = function (participant) {
+      if (participant.weight > 0)
+        participant.weight--;
+    };
+
+    vm.cancel = function() {
+      $mdDialog.cancel();
+    };
+
+    vm.save = function() {
+      vm.payment.participants = [];
       vm.participants.forEach(function (p) {
         if (p.weight > 0) {
           vm.payment.participants.push({

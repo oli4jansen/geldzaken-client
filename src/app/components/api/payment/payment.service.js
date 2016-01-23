@@ -11,7 +11,14 @@
    */
   /** @ngInject */
   function paymentService($resource, api) {
-    this.Payment = $resource(api.private + '/groups/:group/payments', {group: "@group"});
+    this.Payment = $resource(api.private + '/groups/:group/payments/:id', {
+      group: "@group",
+      id: "@id"
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
 
     return {
       Payment: this.Payment

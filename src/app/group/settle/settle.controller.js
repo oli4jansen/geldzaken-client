@@ -10,6 +10,7 @@
     var vm = this;
 
     vm.group = group;
+    vm.settled = false;
 
     vm.settle = function (ev) {
       var confirm = $mdDialog.confirm()
@@ -20,15 +21,16 @@
             .ok(localize('Settle'))
             .cancel(localize('Cancel'));
       $mdDialog.show(confirm).then(function() {
+        vm.settled = true;
         $http.get(api.private + '/groups/' + group.id + '/settle')
         .success(function () {
-          $state.reload();
-          $state.go('private.group.participants');
+          vm.settled = false;
           $mdDialog.show($mdDialog.alert()
             .title(localize('Group was settled!'))
             .ariaLabel(localize('Confirmation'))
             .ok(localize('Okay!'))
           );
+          $state.reload();
         })
         .error(function (data) {
           $mdDialog.show($mdDialog.alert()

@@ -39,6 +39,10 @@
         balances[payment.payedBy.email] += payment.amount;
       }
 
+      lodash.forEach(members, function (m) {
+        balances[m.email] = Math.round(balances[m.email]*100)/100;
+      });
+
       return balances;
     };
 

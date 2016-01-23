@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($state, $mdDialog, $mdMedia, balanceCalculator, userService, memberService, groups) {
+  function MainController($state, $mdDialog, $mdMedia, balanceCalculator, userService, memberService, groups, localize) {
     var vm = this;
     vm.groups = groups;
     vm.inactiveGroups = [];
@@ -19,9 +19,9 @@
       }
     }
 
-    for (var i = 0; i < vm.groups.length; i++) {
-      var balances = balanceCalculator.calculate(vm.groups[i].members, vm.groups[i].payments);
-      vm.groups[i].balance = balances[vm.me.email];
+    for (var j = 0; j < vm.groups.length; j++) {
+      var balances = balanceCalculator.calculate(vm.groups[j].members, vm.groups[j].payments);
+      vm.groups[j].balance = balances[vm.me.email];
     }
 
     vm.show = function (group) {

@@ -26,7 +26,7 @@
             .ariaLabel('Signup Confirmation')
             .ok(localize('Okay!'))
         );
-        $state.go('public.login');
+        $state.go('public.login', { email: vm.user.email });
       });
     };
   }

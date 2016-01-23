@@ -13,10 +13,23 @@
       controller: 'PublicController as vm',
       anonymous: true
     })
+    .state('public.entry', {
+      url: '/entry',
+      templateUrl: 'app/entry/entry.html',
+      controller: 'EntryController as vm',
+      resolve: {
+        $title: function(localize) {
+          return localize('Authenticating');
+        }
+      }      
+    })
     .state('public.login', {
       url: '/login',
       templateUrl: 'app/login/login.html',
       controller: 'LoginController as vm',
+      params: {
+        email: ''
+      },
       resolve: {
         $title: function(localize) {
           return localize('Log in');
@@ -30,6 +43,16 @@
       resolve: {
         $title: function(localize) {
           return localize('Sign up');
+        }
+      }      
+    })
+    .state('public.forgotpassword', {
+      url: '/forgot-password/:email/:token',
+      templateUrl: 'app/forgotpassword/forgotpassword.html',
+      controller: 'ForgotPasswordController as vm',
+      resolve: {
+        $title: function(localize) {
+          return localize('Forgot password');
         }
       }      
     })
@@ -50,7 +73,7 @@
       authorized: true
     })
     .state('private.main', {
-      url: '/',
+      url: '/overview',
       templateUrl: 'app/main/main.html',
       controller: 'MainController as vm',
       authorized: true,
@@ -137,7 +160,7 @@
       }
     });
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/entry');
   }
 
 })();
