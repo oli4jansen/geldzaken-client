@@ -6,7 +6,7 @@
       .service('authentication', authentication);
 
   /** @ngInject */
-  function authentication($state, $http, localStorageService, authorization, api) {
+  function authentication($mdDialog, $state, $http, localStorageService, authorization, api) {
     /*
     Regelt de authentication van gebruikers. Dit betekent dat hier bijgehouden
     en gecheckt wordt of de gebruiker echt is wie hij zegt dat hij is.
@@ -42,6 +42,12 @@
     };
 
     service.logout = function () {
+      $mdDialog.show(
+        $mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title('Cleared credentials')
+          .ok('Okay!')
+      );
       localStorageService.remove('x-access-token', 'x-key', 'me', 'redirectTo');
       authorization.clear();
       $state.go('public.login');
@@ -89,8 +95,14 @@
         }
       })
       .error(function (data) {
-        service.logout();
+        $mdDialog.show(
+          $mdDialog.alert()
+            .clickOutsideToClose(true)
+            .title(JSON.stringify(data.message || data))
+            .ok('Okay!')
+        );
         throw new Error(data);
+        service.logout();
       });
    };
 

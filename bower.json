@@ -1,6 +1,6 @@
 {
   "name": "geldzakenAngular",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "angular-resource": "~1.4.2",
     "angular-sanitize": "1.4.8",
@@ -20,6 +20,7 @@
     "angular-mocks": "~1.4.2"
   },
   "resolutions": {
-    "angular": "~1.4.2"
+    "angular": "^1.4.8",
+    "angular-animate": "^1.4.8"
   }
 }

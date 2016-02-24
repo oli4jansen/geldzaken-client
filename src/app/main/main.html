@@ -52,7 +52,7 @@
         <div layout="row">
           <h3>{{ group.name }}</h3>
           <span flex></span>
-          <p ng-class="{ 'red': group.balance < 0, 'green': group.balance > 0  }">&euro; {{ group.balance }}</p>
+          <p ng-class="{ 'red': group.balance < 0, 'green': group.balance > 0  }">&euro; {{ group.balance | number: 2 }}</p>
         </div>
         <p localize data-num="{{group.members.length}}">{num} members</p>
       </div>

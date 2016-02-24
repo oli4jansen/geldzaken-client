@@ -13,7 +13,7 @@
             <md-radio-button value="-amount" ng-click="" class="md-primary"><span localize>Amount</span></md-radio-button>
           </md-menu-item>
           <md-menu-item>
-            <md-radio-button value="-createdAt" ng-click="" class="md-primary"><span localize>Creation date</span></md-radio-button>
+            <md-radio-button value="-createdAt" ng-click="" class="md-primary"><span localize>Added on</span></md-radio-button>
           </md-menu-item>
         </md-radio-group>
       </md-menu-content>
@@ -24,7 +24,7 @@
     <md-button ng-click="vm.showCreatePayment($event)"><span localize>Add payment</span></md-button>
   </div>
   <md-list>
-    <md-list-item ng-click="vm.showUpdatePayment($event, payment)" class="md-3-line md-payment" ng-repeat="payment in vm.group.payments | orderBy: vm.sorting">
+    <md-list-item ng-click="vm.showPaymentOptions(payment)" class="md-3-line md-payment" ng-repeat="payment in vm.group.payments | orderBy: vm.sorting">
       <div></div>
       <div class="md-list-item-text">
         <div layout="row">

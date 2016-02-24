@@ -1,11 +1,11 @@
-<md-dialog aria-label="Add payment"  ng-cloak>
+<md-dialog aria-label="Update payment"  ng-cloak>
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons" ng-click="vm.cancel()">close</md-icon>
         <span flex></span>
-        <md-button class="md-accent" ng-click="vm.create()" ng-if="vm.payment.amount">
-          <span localize>Add</span>
+        <md-button class="md-accent" ng-click="vm.save()">
+          <span localize>Save</span>
         </md-button>
       </div>
     </md-toolbar>
@@ -15,7 +15,7 @@
 
           <md-input-container class="md-block">
             <label localize>Title</label>
-            <input type="text" name="description" ng-model="vm.payment.description" md-autofocus>
+            <input type="text" name="description" ng-model="vm.payment.description">
           </md-input-container>
 
           <md-input-container>
@@ -23,7 +23,7 @@
             <input type="number" step="0.01" name="amount" ng-model="vm.payment.amount">
           </md-input-container>
 
-          <md-input-container ng-if="vm.payment.amount">
+          <md-input-container>
             <label localize>Payed by</label>
             <md-select ng-model="vm.payment.payedBy">
               <md-option ng-repeat="participant in vm.participants" value="{{::participant.email}}">
@@ -32,7 +32,7 @@
             </md-select>
           </md-input-container>
 
-          <div layout="row" ng-if="vm.payment.amount">
+          <div layout="row">
             <md-button ng-click="vm.increaseAllParticipants()" class="md-raised md-primary" flex="50">
               <span localize>Everyone</span> +1
             </md-button>
@@ -41,7 +41,7 @@
             </md-button>
           </div>
 
-          <md-list ng-if="vm.payment.amount">
+          <md-list>
             <md-list-item ng-repeat="participant in vm.participants" ng-click="vm.increaseParticipant(participant)" class="md-with-secondary md-2-line" ng-class="{ 'not-active': participant.weight == 0 }">
               <div class="md-list-item-text">
                 <h3>{{::participant.name}}</h3>
@@ -50,7 +50,6 @@
               <md-icon class="material-icons md-secondary" ng-click="vm.decreaseParticipant(participant)" aria-label="Decrease weight">remove</md-icon>
             </md-list-item>
           </md-list>
-
         </form>
       </md-content>
     </md-dialog-content>

@@ -52,9 +52,32 @@ html {
   flex-direction: row;
 }
 
-body > ui-view,
 body > ui-view > div.layout-column {
   width: 100%;
+  display: block;
+  background-color: white;
+}
+
+body {
+  background-color: #10733B
+}
+
+body > ui-view {
+  width: 100%;
+  display: flex;
+  max-width: 1000px;
+  margin: 0;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+@media screen and (min-width: 1000px) {
+  body > ui-view {
+    margin: 25px auto;
+    border-radius: 2px;
+    > div.layout-column {
+      overflow-y: auto;
+    }
+  }
 }
 
 .browsehappy {
@@ -67,7 +90,7 @@ body > ui-view > div.layout-column {
 md-card.alert md-card-content,
 md-card.alert md-card-title,
 md-card.alert {
-  background-color: rgb(121, 134, 203);
+  background-color: #7986CB;
   color: white;
 }
 

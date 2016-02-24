@@ -141,22 +141,13 @@
           'selectedTab' : 1
       }
     })
-    .state('private.group.settle', {
-      url: '/settle',
-      templateUrl: 'app/group/settle/settle.html',
-      controller: 'SettleController as vm',
+    .state('private.group.more', {
+      url: '/more',
+      templateUrl: 'app/group/more/more.html',
+      controller: 'MoreController as vm',
       authorized: true,
       data: {
           'selectedTab' : 2
-      }
-    })
-    .state('private.group.settings', {
-      url: '/settings',
-      templateUrl: 'app/group/settings/settings.html',
-      controller: 'GroupSettingsController as vm',
-      authorized: true,
-      data: {
-          'selectedTab' : 3
       }
     });
 

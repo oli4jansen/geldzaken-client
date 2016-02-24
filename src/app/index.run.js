@@ -12,6 +12,9 @@
     amMoment.changeLocale('nl');
 
     $window.i18n = {
+      'Settling': 'Afrekenen',
+      'More': 'Meer',
+      'Added on': 'Toegevoegd op',
       'Overview': 'Overzicht',
       'Groups': 'Groepen',
       'Log out': 'Log uit',

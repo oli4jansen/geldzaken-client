@@ -1,9 +1,0 @@
-<md-content layout-padding>
-  <p localize>When you settle a group, we calculate the transactions needed to get all balances to zero and mail them to all participants.</p>
-  <div layout="column">
-  	<md-button ng-click="vm.settle($event)" class="md-primary md-raised">
-  	  <span localize ng-if="!vm.settled">Settle group</span>
-		<md-progress-circular md-mode="indeterminate" class="md-accent" style="margin: 0 auto;" ng-if="vm.settled"></md-progress-circular>
-  	</md-button>
-  </div>
-</md-content>

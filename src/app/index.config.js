@@ -7,9 +7,18 @@
 
   /** @ngInject */
   function config($provide, $httpProvider, $logProvider, $mdThemingProvider, localStorageServiceProvider) {
+    var moneyGreenMap = $mdThemingProvider.extendPalette('green', {
+      '300': 'B5FED3',
+      '500': '1FA056',
+      '600': '3CB97B',
+      '700': '10733B',
+      'contrastDefaultColor': 'light'
+    });
+
+    $mdThemingProvider.definePalette('moneyGreen', moneyGreenMap);
     $mdThemingProvider.theme('default')
-    .primaryPalette('indigo')
-    .accentPalette('grey');
+      .primaryPalette('moneyGreen')
+      .accentPalette('grey');
 
     $provide.decorator("$exceptionHandler", function($delegate, $injector) {
       return function (exception) {

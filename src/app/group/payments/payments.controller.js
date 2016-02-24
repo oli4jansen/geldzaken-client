@@ -5,6 +5,7 @@
     .module('geldzakenAngular')
     .controller('PaymentsController', PaymentsController)
     .controller('CreatePaymentController', CreatePaymentController)
+    .controller('PaymentOptionsController', PaymentOptionsController)
     .controller('UpdatePaymentController', UpdatePaymentController);
 
   /** @ngInject */
@@ -42,28 +43,18 @@
       })
     };
 
-    vm.showUpdatePayment = function ($event, payment) {
-      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+    vm.showPaymentOptions = function (payment) {
       $mdDialog.show({
-        controller: UpdatePaymentController,
+        templateUrl: 'app/group/payments/paymentOptions.html',
+        clickOutsideToClose:true,
+        controller: PaymentOptionsController,
         controllerAs: 'vm',
-        templateUrl: 'app/group/payments/updatePayment.html',
-        targetEvent: $event,
-        clickOutsideToClose: true,
-        fullscreen: useFullScreen,
         locals: {
-          group: vm.group,
-          payment: payment
+          payment: payment,
+          group: group
         }
       })
-      .then(function (data) {
-        paymentService.Payment.update({ group: vm.group.id, id: payment.id }, data, function () {
-          $state.reload();
-        }, function (data) {
-          throw new Error(data);
-        });
-      })
-    };
+    }
 
     vm.openMenu = function($mdOpenMenu, ev) {
       $mdOpenMenu(ev);
@@ -100,9 +91,11 @@
     var vm = this;
     vm.group = group;
     vm.payment = {
+      description: '',
       participants: [],
       payedBy: userService.me().email
     };
+    vm.weightSum = 0;
 
     vm.participants = (function () {
       var participants = lodash.map(group.members, function (p) {
@@ -115,6 +108,16 @@
       return participants;
     })();
 
+    vm.balanceChange = function (participant) {
+      if (vm.weightSum == 0) return 0;
+      var share = -1 * (vm.payment.amount / vm.weightSum);
+      if (participant.email == vm.payment.payedBy) {
+        return share * participant.weight + vm.payment.amount;
+      } else {
+        return share * participant.weight;
+      }
+    };
+
     vm.increaseAllParticipants = function () {
       vm.participants.forEach(vm.increaseParticipant);
     };
@@ -123,15 +126,19 @@
       vm.participants.forEach(function (p) {
         p.weight = 0;
       });
+      vm.weightSum = 0;
     };
 
     vm.increaseParticipant = function (participant) {
+      vm.weightSum++;
       participant.weight++;
     };
 
     vm.decreaseParticipant = function (participant) {
-      if (participant.weight > 0)
+      if (participant.weight > 0) {
         participant.weight--;
+        vm.weightSum--;
+      }
     };
 
     vm.cancel = function() {
@@ -150,6 +157,50 @@
 
       $mdDialog.hide(vm.payment);
     };
+  }
+
+  /** @ngInject */
+  function PaymentOptionsController($mdDialog, $mdMedia, $state, localize, payment, group, paymentService) {
+    var vm = this;
+
+    vm.update = function () {
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'));
+
+      $mdDialog.show({
+        controller: UpdatePaymentController,
+        controllerAs: 'vm',
+        templateUrl: 'app/group/payments/updatePayment.html',
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen,
+        locals: {
+          group: group,
+          payment: payment
+        }
+      })
+      .then(function (data) {
+        paymentService.Payment.update({ group: group.id, id: payment.id }, data, function () {
+          $state.reload();
+        }, function (data) {
+          throw new Error(data);
+        });
+      })
+    };
+
+    vm.delete = function () {
+      $mdDialog.show($mdDialog.confirm()
+        .title(localize('Are you sure?'))
+        .ariaLabel('Delete Payment?')
+        .ok(localize('Delete'))
+        .cancel(localize('Cancel')))
+      .then(function() {
+        paymentService.Payment.delete({ group: group.id, id: payment.id }, function () {
+          $state.reload();
+        }, function (data) {
+          throw new Error(data);
+        });
+      });
+    };
+
   }
 
   /** @ngInject */
@@ -176,6 +227,20 @@
       return participants;
     })();
 
+    vm.weightSum = lodash.sum(lodash.map(vm.participants, function (p) {
+      return p.weight
+    }));
+
+    vm.balanceChange = function (participant) {
+      if (vm.weightSum == 0) return 0;
+      var share = -1 * (vm.payment.amount / vm.weightSum);
+      if (participant.email == vm.payment.payedBy) {
+        return share * participant.weight + vm.payment.amount;
+      } else {
+        return share * participant.weight;
+      }
+    };
+
     vm.increaseAllParticipants = function () {
       vm.participants.forEach(vm.increaseParticipant);
     };
@@ -184,15 +249,19 @@
       vm.participants.forEach(function (p) {
         p.weight = 0;
       });
+      vm.weightSum = 0;
     };
 
     vm.increaseParticipant = function (participant) {
+      vm.weightSum++;
       participant.weight++;
     };
 
     vm.decreaseParticipant = function (participant) {
-      if (participant.weight > 0)
+      if (participant.weight > 0) {
         participant.weight--;
+        vm.weightSum--;
+      }
     };
 
     vm.cancel = function() {

@@ -1,0 +1,25 @@
+<md-subheader><span localize>Settling</span></md-subheader>
+<md-content layout-padding layout="column">
+  <p localize>When you settle a group, we calculate the transactions needed to get all balances to zero and mail them to all participants.</p>
+  <md-button ng-click="vm.settle($event)" class="md-primary md-raised">
+    <span localize ng-if="!vm.settled">Settle group</span>
+  <md-progress-circular md-mode="indeterminate" class="md-accent" style="margin: 0 auto;" ng-if="vm.settled"></md-progress-circular>
+  </md-button>
+</md-content>
+<md-subheader><span localize>Settings</span></md-subheader>
+<md-content layout-padding>
+  <form name="settingsForm">
+    <md-content class="autoScroll" layout="column">
+      <md-input-container class="md-block">
+        <label localize>Name</label>
+        <input type="text" required name="name" ng-model="vm.group.name">
+        <div ng-messages="settingsForm.name.$error">
+          <div ng-message="required"><span localize>This is required.</span></div>
+        </div>
+      </md-input-container>
+
+      <md-button type="submit" class="md-primary md-raised" ng-click="vm.save()"><span localize>Save</span></md-button>
+      <md-button type="submit" class="md-primary md-raised md-warn" ng-click="vm.leave()"><span localize>Leave group</span></md-button>
+    </md-content>
+  </form>
+</md-content>
